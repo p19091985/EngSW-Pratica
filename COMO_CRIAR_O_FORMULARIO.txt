@@ -1,75 +1,94 @@
-CRIAR O SURVEY NO GOOGLE FORMS COM APPS SCRIPT
+CRIAR O SURVEY EM UMA ÚNICA PÁGINA NO GOOGLE FORMS
 
-1. Abra https://script.google.com/ e crie um novo projeto.
-2. Abra o arquivo Formulario_Survey_Integracao.gs desta pasta em um editor de texto.
-3. Copie TODO o conteúdo e substitua o código inicial do arquivo Código.gs no Apps Script.
-4. Salve o projeto com o nome EngSW-Pratica.
-5. No seletor de funções, escolha criarFormularioSurvey e clique em Executar.
-6. Na primeira execução, autorize sua própria conta a criar e gerenciar o formulário.
-7. Aguarde a conclusão. O Registro de execução mostrará dois links:
-   - EDITAR E CONSULTAR RESPOSTAS: para revisar o formulário e acompanhar os envios.
-   - LINK PARA OS PARTICIPANTES: endereço que será encaminhado às pessoas.
+1. Abra https://script.google.com/ e crie um projeto ou abra o projeto anterior.
+2. Copie TODO o arquivo Formulario_Survey_Integracao.gs desta pasta.
+3. Substitua o conteúdo de Código.gs no Apps Script e salve.
+4. No seletor de funções, escolha criarFormularioSurvey e clique em Executar.
+5. Se solicitado, autorize sua conta a criar e gerenciar o formulário.
+6. O Registro de execução mostrará o link de edição e o link dos participantes.
+7. Abra o NOVO link de edição, revise e faça o piloto antes de divulgar.
 
-Não é necessário usar Implantar, criar aplicativo Web, instalar bibliotecas nem
-ativar serviços avançados. O formulário será criado na conta Google que executar
-o código. O script o publicará ao finalizar a montagem. Não envia convites.
+Não é necessário usar Implantar, criar aplicativo Web nem instalar bibliotecas.
+O formulário será criado na conta que executar o código e publicado ao final.
+O script não envia convites nem concede acesso às respostas a terceiros.
+
+COMO FUNCIONA ESTA VERSÃO
+
+Todas as perguntas aparecem em uma única página, organizada por títulos.
+Não há botão Próxima nem encaminhamento automático conforme a resposta.
+Somente Q0 e Q1 são obrigatórias para enviar. Quem não concordar com o termo
+ou não atender aos critérios deve fechar o formulário sem enviar, conforme
+as orientações apresentadas antes das perguntas e nos próprios itens.
+Se houver envio com recusa ou inelegibilidade, exclua-o da análise.
+
+Esta versão cria um NOVO formulário mesmo quando executada no projeto Apps
+Script usado anteriormente. O formulário anterior, suas respostas e seu link
+permanecem preservados. Para divulgar a versão em página única, utilize o NOVO
+link mostrado no Registro de execução. Se o link antigo já foi divulgado,
+organize a troca e o encerramento da coleta anterior pelo Google Forms; o
+script não encerra essa coleta nem reúne as respostas das duas versões.
+
+Executar novamente esta mesma versão no mesmo projeto recupera os links,
+sem duplicar o formulário, alterar perguntas ou apagar respostas. Mudanças
+posteriores no código não são aplicadas automaticamente a um formulário já
+criado. Se a criação falhar, o registro mostrará o link do arquivo parcial.
+Revise-o; para uma nova tentativa preservando-o, use outro projeto Apps Script.
+
+REVISÃO DAS PERGUNTAS
+
+Foram mantidas Q0 a Q14, com Q13 apresentada em três itens individuais:
+Q13a, Q13b e Q13c. Assim, o formulário contém 17 campos de resposta.
+O conjunto já contempla as questões de pesquisa previstas no planejamento:
+- Q0 e Q1: consentimento e elegibilidade.
+- Q2 a Q5: experiência, papel e contexto organizacional.
+- Q6 e Q7: presença das integrações e meios utilizados.
+- Q8 a Q11: momento do planejamento, registros e decisões de arquitetura.
+- Q12: dificuldades prioritárias, com no máximo três escolhas.
+- Q13a a Q13c: restrições tardias, retrabalho e atrasos percebidos.
+- Q14: relato complementar sobre planejamento, trabalho realizado e prazos.
+
+Não foram acrescentadas perguntas: os objetivos definidos já estão cobertos.
+O piloto deverá verificar compreensão, alternativas ausentes e tempo de
+resposta antes de qualquer ampliação. As opções Outro e o relato aberto
+permitem registrar situações não contempladas nas alternativas.
+
+As perguntas, alternativas e escalas continuam vinculadas ao instrumento
+em Word. Esta versão substitui somente as orientações de navegação por
+seções e encerramento automático presentes nos documentos anteriores.
+Registre essa alteração de apresentação no relato da execução do estudo.
 
 ANTES DE DIVULGAR
 
-Abra o link de edição e confira os enunciados. Execute o piloto previsto no
-planejamento. O prazo de retenção informado no TCLE é 02/06/2027; ele não será
-executado automaticamente pelo script. Se o protocolo mudar, atualize o TCLE e
-os documentos antes de abrir a coleta principal.
+Teste o link em janela anônima, sem login, inclusive no celular. Confira que
+os respondedores podem ser qualquer pessoa com o link; a conta institucional
+pode impor restrições que o script não remove. A coleta de e-mails, o resumo
+público das respostas e o limite de uma resposta por conta ficam desativados.
+Mantenha o link de edição e as respostas restritos à equipe da pesquisa.
 
-Teste o link de participantes em uma janela anônima, sem login, inclusive no
-celular. Nas configurações de publicação/compartilhamento, confira que o acesso
-de respondedores está definido para qualquer pessoa com o link. A conta
-institucional pode impor restrições que o script não remove. O script não usa
-o método obsoleto setRequireLogin. A coleta de e-mails e o limite de uma resposta
-por conta estarão desativados. Mantenha as respostas e o link de edição restritos
-a quem realiza a pesquisa.
+Confira que todas as perguntas aparecem na mesma página, que as instruções
+para recusa e inelegibilidade estão visíveis e que Q12 rejeita mais de três
+escolhas. As opções Outro utilizam o campo nativo de texto. A escala de Q13
+mantém cinco categorias de frequência, Não se aplica e Não sei informar.
 
-Teste os três percursos:
-- Q0 = Não: somente encerramento, sem perguntas de perfil ou do estudo.
-- Q0 = Sim e Q1 = Não: encerramento, sem perguntas de perfil ou do estudo.
-- Q0 = Sim e Q1 = Sim: questionário completo e envio, sem tela de recusa.
+Nas caixas de seleção, Nenhum/Não sei devem ser marcados isoladamente.
+O Forms limita a quantidade em Q12, mas não impede essas combinações
+inconsistentes. Revise-as na limpeza dos dados, conforme o planejamento.
+Exclua também os registros de teste e piloto da análise principal.
 
-Somente Q0 e Q1 são obrigatórias. Q13 aparece como três itens individuais,
-Q13a, Q13b e Q13c, com os mesmos enunciados e todas as categorias da escala.
-As opções Outro usam o campo nativo de texto do Google Forms.
-Q12 aceita no máximo três escolhas, incluindo Outro.
-
-As instruções para selecionar Nenhum/Não sei isoladamente foram preservadas.
-A validação nativa das caixas de seleção limita a quantidade, mas não impede
-essas combinações específicas. Revise inconsistências na limpeza dos dados,
-conforme o planejamento. Se a pessoa clicar em Enviar no encerramento, o Forms
-poderá registrar a recusa ou inelegibilidade: exclua esses registros da análise,
-assim como os envios feitos para teste ou piloto.
-
-As respostas ficam na aba Respostas do Google Forms. O script não cria planilha
-adicional, não concede acesso de edição e não publica um resumo das respostas.
-
-REEXECUÇÃO
-
-Executar criarFormularioSurvey novamente no MESMO projeto apenas mostra os
-links já criados. Não duplica o formulário, não altera perguntas e não apaga
-respostas. Mudanças feitas no código depois da criação não são reaplicadas ao
-formulário existente; edite-o pelo link de edição antes de iniciar a coleta.
-
-Se a criação falhar, o Registro de execução mostrará o link do arquivo parcial.
-Revise esse arquivo. Para tentar uma nova criação sem alterar o anterior, crie
-outro projeto Apps Script e cole novamente o código completo.
+O prazo de retenção do TCLE é 02/06/2027; o script não executa a exclusão
+automática. As respostas ficam na aba Respostas do Forms. Não é criada
+planilha adicional. Realize o piloto previsto no planejamento e confirme
+se o tempo estimado de 7 a 10 minutos corresponde à experiência observada.
 
 VERIFICAÇÃO
 
-O código foi verificado localmente quanto à sintaxe, presença dos campos,
-alternativas, escala, limite de Q12, configuração de privacidade, desvios de
-seção, reexecução e tratamento de criação incompleta. Os testes usaram uma
-simulação do serviço. A execução real na sua conta Google e o teste de acesso
-sem login deverão ser feitos seguindo os passos acima.
+A sintaxe e o comportamento foram verificados localmente com simulação do
+serviço: página única, 17 campos, alternativas, escala, obrigatoriedade,
+limite de Q12, privacidade, preservação da versão anterior, reexecução e
+tratamento de criação incompleta. A execução na conta Google e a conferência
+do acesso pelo link deverão ser realizadas conforme os passos acima.
 
-Referência do instrumento: Formulario_Survey_Integracao.docx.
-Documentação oficial consultada:
+Documentação oficial:
 https://developers.google.com/apps-script/reference/forms/form
-https://developers.google.com/apps-script/reference/forms/page-break-item
+https://developers.google.com/apps-script/reference/forms/section-header-item
 https://developers.google.com/apps-script/reference/forms/checkbox-validation-builder

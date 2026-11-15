@@ -2,24 +2,27 @@
  * EngSW-Pratica — gerador do Google Forms.
  * Copie TODO este arquivo para Código.gs e execute criarFormularioSurvey.
  * Não é necessário implantar como aplicativo Web nem instalar bibliotecas.
- * Fonte: Formulario_Survey_Integracao.docx. Q13 dividida em Q13a, Q13b e Q13c.
+ * Instrumento: Formulario_Survey_Integracao.docx. Q13 dividida em Q13a, Q13b e Q13c.
+ * Versão de apresentação 2: todas as perguntas em uma única página.
+ * Os títulos apenas organizam a leitura; não há desvios nem botão Próxima.
+ * Cria um novo formulário, preservando a versão anterior e suas respostas.
  * As respostas ficam no próprio Google Forms, na conta que executar o código.
  * Este script não envia convites nem concede acesso às respostas a terceiros.
  *
  * API oficial: https://developers.google.com/apps-script/reference/forms/form
- * Fluxo: https://developers.google.com/apps-script/reference/forms/page-break-item
+ * Títulos: https://developers.google.com/apps-script/reference/forms/section-header-item
  * Validação: https://developers.google.com/apps-script/reference/forms/checkbox-validation-builder
  */
 
 const SURVEY = {
   "title": "Planejamento e arquitetura de integração de sistemas na prática",
-  "intro": "O presente questionário integra um estudo acadêmico da disciplina INF6008/INF7008 – Engenharia de Software, do Programa de Pós-Graduação em Informática da Universidade Federal do Espírito Santo, período 2026/2, ministrada pela Profa. Dra. Monalessa Perini Barcellos.\n\nO objetivo é compreender quando e como as integrações entre sistemas são planejadas e especificadas, bem como identificar dificuldades e ocorrências percebidas durante sua realização. O tempo estimado de resposta é de 7 a 10 minutos.\n\nNeste estudo, integração de sistemas corresponde à troca de dados ou à utilização de funcionalidades entre sistemas distintos, por exemplo, por APIs, mensagens, arquivos ou acesso a dados externos. A integração de código em um repositório, isoladamente, não se enquadra nessa definição.\n\nA participação destina-se a profissionais com experiência recente em integração de sistemas em organizações situadas no Brasil, conforme os critérios apresentados em Q1.",
+  "intro": "O presente questionário integra um estudo acadêmico da disciplina INF6008/INF7008 – Engenharia de Software, do Programa de Pós-Graduação em Informática da Universidade Federal do Espírito Santo, período 2026/2, ministrada pela Profa. Dra. Monalessa Perini Barcellos.\n\nO objetivo é compreender quando e como as integrações entre sistemas são planejadas e especificadas, bem como identificar dificuldades e ocorrências percebidas durante sua realização. O tempo estimado de resposta é de 7 a 10 minutos.\n\nNeste estudo, integração de sistemas corresponde à troca de dados ou à utilização de funcionalidades entre sistemas distintos, por exemplo, por APIs, mensagens, arquivos ou acesso a dados externos. A integração de código em um repositório, isoladamente, não se enquadra nessa definição.\n\nA participação destina-se a profissionais com experiência recente em integração de sistemas em organizações situadas no Brasil, conforme os critérios apresentados em Q1.\n\nTodas as perguntas estão nesta página. Leia o termo de consentimento e os critérios antes de responder às demais questões. Se não concordar em participar ou não atender a algum critério, feche o formulário sem enviar.",
   "consent": "Sua participação é voluntária, sem remuneração ou benefício individual garantido. Você poderá interromper o preenchimento antes do envio, sem justificativa ou prejuízo. As perguntas centrais poderão ser deixadas em branco. Se sentir desconforto ao recordar dificuldades profissionais, deixe o item sem resposta ou encerre a participação.\n\nNão serão solicitados nome, e-mail, nome da organização ou anexos. Evite pessoas, clientes, credenciais e detalhes confidenciais nos relatos. Características combinadas e textos livres podem permitir identificação indireta; por isso, a equipe revisará os relatos e divulgará os resultados de forma agregada ou em trechos desidentificados.\n\nOs três autores acessarão as respostas para análise, relatório e apresentação acadêmica. A professora receberá os resultados e, se necessário à avaliação, registros desidentificados. Os dados brutos ficarão em pasta restrita e serão excluídos até 02/06/2027; as sínteses agregadas poderão integrar o relatório.\n\nApós o envio, sem um identificador, não será possível localizar sua resposta com segurança para excluí-la individualmente. A plataforma poderá tratar dados técnicos segundo suas condições; esses dados não serão solicitados pela equipe. Para esclarecimentos sobre o estudo, utilize os contatos abaixo.\n\nFabio da Silva Salvador  |  Fabio.s.salvador@edu.ufes.br\n\nFernando Azevedo Peres  |  fernando.peres@edu.ufes.br\n\nPatrik Lima Pereira  |  patrik.pereira@edu.ufes.br",
   "reference": "Da Q3 à Q5 e da Q7 à Q14, considere um único projeto de referência: o projeto profissional mais recente, em organização situada no Brasil, cuja implementação de uma integração você acompanhou nos últimos 12 meses. Se houver mais de uma integração nesse projeto, considere a mais recente cuja implementação tenha sido iniciada. Observe somente o que ocorreu nesse período, mesmo que o projeto ainda esteja em andamento. Não informe o nome do projeto.",
   "questions": {
     "Q0": {
       "title": "Q0  Após ler as informações, você concorda voluntariamente em participar deste estudo?",
-      "help": "Escolha única. Obrigatória.",
+      "help": "Escolha única. Obrigatória para enviar. Se não desejar participar, encerre o preenchimento e feche o formulário sem enviar.",
       "options": [
         "Sim, li as informações e concordo em participar.",
         "Não desejo participar."
@@ -28,7 +31,7 @@ const SURVEY = {
     },
     "Q1": {
       "title": "Q1  Você atende a todos os critérios de participação apresentados abaixo?",
-      "help": "Escolha única. Obrigatória.\n\nTer 18 anos ou mais; ter atuado profissionalmente, nos últimos 12 meses, em projeto de software de organização situada no Brasil; ter acompanhado nesse projeto uma integração cuja implementação foi iniciada nesse período.",
+      "help": "Escolha única. Obrigatória.\n\nSe não atender a algum critério, encerre o preenchimento e feche o formulário sem enviar.\n\nTer 18 anos ou mais; ter atuado profissionalmente, nos últimos 12 meses, em projeto de software de organização situada no Brasil; ter acompanhado nesse projeto uma integração cuja implementação foi iniciada nesse período.",
       "options": [
         "Sim, atendo a todos os critérios.",
         "Não atendo a pelo menos um dos critérios."
@@ -252,6 +255,10 @@ const SURVEY = {
   ]
 };
 
+// Chaves próprias: executar a versão nova não reutiliza o formulário com várias páginas.
+const FORM_ID_KEY = 'ENGSW_SURVEY_PAGINA_UNICA_V2_FORM_ID';
+const FORM_STATE_KEY = 'ENGSW_SURVEY_PAGINA_UNICA_V2_STATE';
+
 /** Execute esta função no menu superior do Apps Script. */
 function criarFormularioSurvey() {
   const lock = LockService.getScriptLock();
@@ -259,10 +266,10 @@ function criarFormularioSurvey() {
   const properties = PropertiesService.getScriptProperties();
   let form;
   try {
-    const existingId = properties.getProperty('ENGSW_SURVEY_FORM_ID');
+    const existingId = properties.getProperty(FORM_ID_KEY);
     if (existingId) {
       form = FormApp.openById(existingId);
-      if (properties.getProperty('ENGSW_SURVEY_STATE') !== 'PRONTO') {
+      if (properties.getProperty(FORM_STATE_KEY) !== 'PRONTO') {
         console.log('Formulário incompleto para revisão: ' + form.getEditUrl());
         throw new Error('Uma criação anterior ficou incompleta. Revise o formulário pelo link acima. ' +
           'Para tentar novamente sem alterar esse arquivo, use um novo projeto Apps Script e cole este código.');
@@ -271,9 +278,15 @@ function criarFormularioSurvey() {
       return mostrarLinks_(form);
     }
 
-    // Só publicar depois de montar e verificar todas as perguntas.
+    const previousId = properties.getProperty('ENGSW_SURVEY_FORM_ID');
+    if (previousId) {
+      console.log('Será criada uma versão em página única com um novo link. ' +
+        'O formulário anterior e suas respostas serão preservados.');
+    }
+
+    // Só publicar depois de montar todas as perguntas.
     form = FormApp.create(SURVEY.title, false);
-    properties.setProperties({ENGSW_SURVEY_FORM_ID: form.getId(), ENGSW_SURVEY_STATE: 'EM_CRIACAO'});
+    properties.setProperties({[FORM_ID_KEY]: form.getId(), [FORM_STATE_KEY]: 'EM_CRIACAO'});
     form.setDescription(SURVEY.intro)
       .setCollectEmail(false)
       .setLimitOneResponsePerUser(false)
@@ -281,38 +294,38 @@ function criarFormularioSurvey() {
       .setShowLinkToRespondAgain(false)
       .setAllowResponseEdits(false)
       .setShuffleQuestions(false)
-      .setProgressBar(true)
+      .setProgressBar(false)
       .setIsQuiz(false)
       .setConfirmationMessage('Registro recebido. Agradecemos seu interesse. ' +
         'Somente respostas de pessoas que concordaram em participar e atendem aos critérios serão incluídas na análise.');
 
     form.addSectionHeaderItem().setTitle('Termo de Consentimento Livre e Esclarecido')
       .setHelpText(SURVEY.consent);
-    const consentimento = escolha_(form, 'Q0', true);
+    escolha_(form, 'Q0', true);
 
-    const elegibilidade = form.addPageBreakItem().setTitle('Critérios de participação');
-    const criterios = escolha_(form, 'Q1', true);
+    form.addSectionHeaderItem().setTitle('Critérios de participação');
+    escolha_(form, 'Q1', true);
 
-    // Q1 fica sozinha na seção: respostas inelegíveis não chegam ao perfil profissional.
-    const perfil = form.addPageBreakItem().setTitle('Caracterização do participante')
+    // Títulos organizam a página sem ocultar perguntas ou criar etapas.
+    form.addSectionHeaderItem().setTitle('Caracterização do participante')
       .setHelpText(SURVEY.reference);
     escolha_(form, 'Q2');
     escolha_(form, 'Q3');
 
-    form.addPageBreakItem().setTitle('Contexto organizacional e formas de integração');
+    form.addSectionHeaderItem().setTitle('Contexto organizacional e formas de integração');
     ['Q4', 'Q5', 'Q6'].forEach(function(id) { escolha_(form, id); });
     multipla_(form, 'Q7');
 
-    form.addPageBreakItem().setTitle('Planejamento e especificação');
+    form.addSectionHeaderItem().setTitle('Planejamento e especificação');
     escolha_(form, 'Q8');
     escolha_(form, 'Q9');
     multipla_(form, 'Q10');
 
-    form.addPageBreakItem().setTitle('Decisões de arquitetura e dificuldades');
+    form.addSectionHeaderItem().setTitle('Decisões de arquitetura e dificuldades');
     multipla_(form, 'Q11');
     multipla_(form, 'Q12', 3);
 
-    form.addPageBreakItem().setTitle('Ocorrências percebidas e relato complementar');
+    form.addSectionHeaderItem().setTitle('Ocorrências percebidas e relato complementar');
     form.addSectionHeaderItem().setTitle(SURVEY.questions.Q13.title)
       .setHelpText(SURVEY.questions.Q13.help);
     ['Q13a', 'Q13b', 'Q13c'].forEach(function(id) { escolha_(form, id); });
@@ -320,28 +333,13 @@ function criarFormularioSurvey() {
       .setHelpText(SURVEY.questions.Q14.help).setRequired(false);
     form.addSectionHeaderItem().setTitle('Agradecimento').setHelpText(SURVEY.thanks.join('\n\n'));
 
-    // IMPORTANTE: setGoToPage no PageBreakItem governa a seção ANTERIOR.
-    // Assim, quem concluiu Q14 envia a resposta sem passar pela seção de recusa.
-    const encerramento = form.addPageBreakItem().setTitle('Encerramento sem participação')
-      .setHelpText('Agradecemos seu interesse. O preenchimento foi encerrado e nenhuma resposta sua será incluída na análise do estudo.')
-      .setGoToPage(FormApp.PageNavigationType.SUBMIT);
-
-    consentimento.setChoices([
-      consentimento.createChoice(SURVEY.questions.Q0.options[0], elegibilidade),
-      consentimento.createChoice(SURVEY.questions.Q0.options[1], encerramento)
-    ]);
-    criterios.setChoices([
-      criterios.createChoice(SURVEY.questions.Q1.options[0], perfil),
-      criterios.createChoice(SURVEY.questions.Q1.options[1], encerramento)
-    ]);
-
     // Não usar setRequireLogin: método obsoleto e indisponível em contas pessoais.
     // Em conta institucional, confira o acesso de respondedores no botão Publicar/Compartilhar.
     if (form.supportsAdvancedResponderPermissions()) {
       form.setPublished(true);
     }
     form.setAcceptingResponses(true);
-    properties.setProperty('ENGSW_SURVEY_STATE', 'PRONTO');
+    properties.setProperty(FORM_STATE_KEY, 'PRONTO');
     return mostrarLinks_(form);
   } catch (erro) {
     if (form) console.log('Link para conferir o formulário: ' + form.getEditUrl());

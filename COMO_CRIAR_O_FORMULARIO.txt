@@ -1,4 +1,5 @@
-CRIAR O SURVEY EM UMA ÚNICA PÁGINA NO GOOGLE FORMS
+CRIAR O SURVEY REVISADO NO GOOGLE FORMS
+Gerador v3 | Instrumento 1.1 | Revisão de 17/11/2026
 
 1. Abra https://script.google.com/ e crie um projeto ou abra o projeto anterior.
 2. Copie TODO o arquivo Formulario_Survey_Integracao.gs desta pasta.
@@ -14,19 +15,30 @@ O script não envia convites nem concede acesso às respostas a terceiros.
 
 COMO FUNCIONA ESTA VERSÃO
 
-Todas as perguntas aparecem em uma única página, organizada por títulos.
-Não há botão Próxima nem encaminhamento automático conforme a resposta.
-Somente Q0 e Q1 são obrigatórias para enviar. Quem não concordar com o termo
-ou não atender aos critérios deve fechar o formulário sem enviar, conforme
-as orientações apresentadas antes das perguntas e nos próprios itens.
-Se houver envio com recusa ou inelegibilidade, exclua-o da análise.
+O preenchimento tem três etapas para participantes elegíveis:
+1. Apresentação, termo de consentimento e Q0.
+2. Critérios de participação e Q1, acessíveis após o aceite em Q0.
+3. Perguntas Q2 a Q14, acessíveis após a confirmação dos critérios em Q1.
 
-Esta versão cria um NOVO formulário mesmo quando executada no projeto Apps
-Script usado anteriormente. O formulário anterior, suas respostas e seu link
-permanecem preservados. Para divulgar a versão em página única, utilize o NOVO
-link mostrado no Registro de execução. Se o link antigo já foi divulgado,
-organize a troca e o encerramento da coleta anterior pelo Google Forms; o
-script não encerra essa coleta nem reúne as respostas das duas versões.
+As demais perguntas ficam juntas na terceira etapa, organizadas por títulos.
+Somente Q0 e Q1 são obrigatórias. Uma resposta negativa em qualquer uma
+encaminha para uma quarta seção, de encerramento sem participação, sem
+mostrar as perguntas centrais. Essa seção orienta a fechar a página sem
+enviar. O Forms pode permitir um envio nessa seção; exclua qualquer registro
+de recusa ou inelegibilidade da análise. Ao concluir as perguntas centrais,
+o participante elegível envia sua resposta sem ver a mensagem de recusa.
+
+Q0 e Q1 ficam em seções distintas porque o Google Forms aplica os desvios
+ao final de cada seção. Duas perguntas de desvio na mesma seção poderiam
+fazer a navegação de Q1 sobrepor a recusa em Q0.
+
+Esta revisão cria um NOVO formulário mesmo quando executada no projeto Apps
+Script usado anteriormente. Os formulários anteriores, suas respostas e
+seus links permanecem preservados. Utilize o NOVO link mostrado no Registro
+de execução. Se o link antigo já foi divulgado, organize a troca e o
+encerramento da coleta anterior pelo Google Forms; o script não encerra essa
+coleta nem reúne respostas de versões diferentes. Registre a versão de cada
+coleta e mantenha separadas respostas obtidas com alternativas diferentes.
 
 Executar novamente esta mesma versão no mesmo projeto recupera os links,
 sem duplicar o formulário, alterar perguntas ou apagar respostas. Mudanças
@@ -34,28 +46,31 @@ posteriores no código não são aplicadas automaticamente a um formulário já
 criado. Se a criação falhar, o registro mostrará o link do arquivo parcial.
 Revise-o; para uma nova tentativa preservando-o, use outro projeto Apps Script.
 
-REVISÃO DAS PERGUNTAS
+REVISÃO DAS PERGUNTAS E DO PLANEJAMENTO
 
 Foram mantidas Q0 a Q14, com Q13 apresentada em três itens individuais:
 Q13a, Q13b e Q13c. Assim, o formulário contém 17 campos de resposta.
-O conjunto já contempla as questões de pesquisa previstas no planejamento:
-- Q0 e Q1: consentimento e elegibilidade.
+- Q0 e Q1: consentimento e elegibilidade antes das demais perguntas.
 - Q2 a Q5: experiência, papel e contexto organizacional.
 - Q6 e Q7: presença das integrações e meios utilizados.
 - Q8 a Q11: momento do planejamento, registros e decisões de arquitetura.
 - Q12: dificuldades prioritárias, com no máximo três escolhas.
-- Q13a a Q13c: restrições tardias, retrabalho e atrasos percebidos.
+- Q13a a Q13c: ocorrência de restrições tardias, retrabalho e atrasos.
 - Q14: relato complementar sobre planejamento, trabalho realizado e prazos.
 
-Não foram acrescentadas perguntas: os objetivos definidos já estão cobertos.
-O piloto deverá verificar compreensão, alternativas ausentes e tempo de
-resposta antes de qualquer ampliação. As opções Outro e o relato aberto
-permitem registrar situações não contempladas nas alternativas.
+Q13 pergunta se cada situação foi observada ao menos uma vez na integração
+de referência, apenas no período acompanhado dos últimos 12 meses:
+- Sim: observou ao menos uma ocorrência.
+- Não: não observou nenhuma ocorrência no período acompanhado.
+- Não se aplica: a situação não podia ocorrer no estágio acompanhado.
+- Não sei informar: não tem informação suficiente para avaliar.
 
-As perguntas, alternativas e escalas continuam vinculadas ao instrumento
-em Word. Esta versão substitui somente as orientações de navegação por
-seções e encerramento automático presentes nos documentos anteriores.
-Registre essa alteração de apresentação no relato da execução do estudo.
+A revisão mede ocorrência relatada, sem distinguir um caso isolado de casos
+recorrentes. QP3, indicadores, análise, discussão e limitações foram ajustados
+no planejamento e nos apêndices. Os três itens serão analisados separadamente,
+com contagens e percentuais de Sim e Não. Não se aplica, Não sei informar e
+campos em branco serão apresentados à parte, fora do denominador Sim + Não.
+Os dois documentos Word e este gerador correspondem ao instrumento 1.1.
 
 ANTES DE DIVULGAR
 
@@ -65,10 +80,15 @@ pode impor restrições que o script não remove. A coleta de e-mails, o resumo
 público das respostas e o limite de uma resposta por conta ficam desativados.
 Mantenha o link de edição e as respostas restritos à equipe da pesquisa.
 
-Confira que todas as perguntas aparecem na mesma página, que as instruções
-para recusa e inelegibilidade estão visíveis e que Q12 rejeita mais de três
-escolhas. As opções Outro utilizam o campo nativo de texto. A escala de Q13
-mantém cinco categorias de frequência, Não se aplica e Não sei informar.
+Percorra os três caminhos:
+- Q0 Não: encerramento sem acesso a Q1 ou às perguntas centrais.
+- Q0 Sim e Q1 Não: encerramento sem acesso às perguntas centrais.
+- Q0 Sim e Q1 Sim: acesso a Q2–Q14 e envio sem mensagem de recusa.
+
+Confira que Q2–Q14 podem ficar em branco, Q12 rejeita mais de três escolhas,
+e cada item de Q13 oferece somente Sim, Não, Não se aplica e Não sei informar.
+As opções Outro utilizam o campo nativo de texto. No piloto, verifique a
+compreensão das três respostas Não, Não se aplica e Não sei informar.
 
 Nas caixas de seleção, Nenhum/Não sei devem ser marcados isoladamente.
 O Forms limita a quantidade em Q12, mas não impede essas combinações
@@ -82,13 +102,16 @@ se o tempo estimado de 7 a 10 minutos corresponde à experiência observada.
 
 VERIFICAÇÃO
 
-A sintaxe e o comportamento foram verificados localmente com simulação do
-serviço: página única, 17 campos, alternativas, escala, obrigatoriedade,
-limite de Q12, privacidade, preservação da versão anterior, reexecução e
-tratamento de criação incompleta. A execução na conta Google e a conferência
-do acesso pelo link deverão ser realizadas conforme os passos acima.
+A sintaxe e os caminhos de navegação foram verificados localmente por
+simulação do serviço, incluindo consentimento, elegibilidade, encerramento,
+17 campos, opções de Q13, obrigatoriedade, limite de Q12, privacidade,
+preservação de versões anteriores, reexecução e criação incompleta.
+A execução na conta Google e a conferência do acesso pelo link deverão ser
+realizadas conforme os passos acima.
 
 Documentação oficial:
 https://developers.google.com/apps-script/reference/forms/form
-https://developers.google.com/apps-script/reference/forms/section-header-item
+https://developers.google.com/apps-script/reference/forms/page-break-item
+https://developers.google.com/apps-script/reference/forms/multiple-choice-item
+https://developers.google.com/apps-script/reference/forms/page-navigation-type
 https://developers.google.com/apps-script/reference/forms/checkbox-validation-builder

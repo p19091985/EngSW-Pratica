@@ -3,26 +3,28 @@
  * Copie TODO este arquivo para Código.gs e execute criarFormularioSurvey.
  * Não é necessário implantar como aplicativo Web nem instalar bibliotecas.
  * Instrumento: Formulario_Survey_Integracao.docx. Q13 dividida em Q13a, Q13b e Q13c.
- * Versão de apresentação 2: todas as perguntas em uma única página.
- * Os títulos apenas organizam a leitura; não há desvios nem botão Próxima.
+ * Gerador v3, instrumento 1.1: consentimento e elegibilidade antes das perguntas.
+ * Q13 identifica ocorrência ao menos uma vez, com quatro alternativas por situação.
  * Cria um novo formulário, preservando a versão anterior e suas respostas.
  * As respostas ficam no próprio Google Forms, na conta que executar o código.
  * Este script não envia convites nem concede acesso às respostas a terceiros.
  *
  * API oficial: https://developers.google.com/apps-script/reference/forms/form
  * Títulos: https://developers.google.com/apps-script/reference/forms/section-header-item
+ * Navegação: https://developers.google.com/apps-script/reference/forms/page-break-item
+ * Desvios: https://developers.google.com/apps-script/reference/forms/multiple-choice-item
  * Validação: https://developers.google.com/apps-script/reference/forms/checkbox-validation-builder
  */
 
 const SURVEY = {
   "title": "Planejamento e arquitetura de integração de sistemas na prática",
-  "intro": "O presente questionário integra um estudo acadêmico da disciplina INF6008/INF7008 – Engenharia de Software, do Programa de Pós-Graduação em Informática da Universidade Federal do Espírito Santo, período 2026/2, ministrada pela Profa. Dra. Monalessa Perini Barcellos.\n\nO objetivo é compreender quando e como as integrações entre sistemas são planejadas e especificadas, bem como identificar dificuldades e ocorrências percebidas durante sua realização. O tempo estimado de resposta é de 7 a 10 minutos.\n\nNeste estudo, integração de sistemas corresponde à troca de dados ou à utilização de funcionalidades entre sistemas distintos, por exemplo, por APIs, mensagens, arquivos ou acesso a dados externos. A integração de código em um repositório, isoladamente, não se enquadra nessa definição.\n\nA participação destina-se a profissionais com experiência recente em integração de sistemas em organizações situadas no Brasil, conforme os critérios apresentados em Q1.\n\nTodas as perguntas estão nesta página. Leia o termo de consentimento e os critérios antes de responder às demais questões. Se não concordar em participar ou não atender a algum critério, feche o formulário sem enviar.",
+  "intro": "O presente questionário integra um estudo acadêmico da disciplina INF6008/INF7008 – Engenharia de Software, do Programa de Pós-Graduação em Informática da Universidade Federal do Espírito Santo, período 2026/2, ministrada pela Profa. Dra. Monalessa Perini Barcellos.\n\nO objetivo é compreender quando e como as integrações entre sistemas são planejadas e especificadas, bem como identificar dificuldades e ocorrências percebidas durante sua realização. O tempo estimado de resposta é de 7 a 10 minutos.\n\nNeste estudo, integração de sistemas corresponde à troca de dados ou à utilização de funcionalidades entre sistemas distintos, por exemplo, por APIs, mensagens, arquivos ou acesso a dados externos. A integração de código em um repositório, isoladamente, não se enquadra nessa definição.\n\nA participação destina-se a profissionais com experiência recente em integração de sistemas em organizações situadas no Brasil, conforme os critérios apresentados em Q1.\n\nO preenchimento começa pelo consentimento (Q0) e pelos critérios de participação (Q1), em etapas separadas. As demais perguntas serão apresentadas somente após as duas confirmações. Uma resposta negativa em qualquer etapa levará ao encerramento.",
   "consent": "Sua participação é voluntária, sem remuneração ou benefício individual garantido. Você poderá interromper o preenchimento antes do envio, sem justificativa ou prejuízo. As perguntas centrais poderão ser deixadas em branco. Se sentir desconforto ao recordar dificuldades profissionais, deixe o item sem resposta ou encerre a participação.\n\nNão serão solicitados nome, e-mail, nome da organização ou anexos. Evite pessoas, clientes, credenciais e detalhes confidenciais nos relatos. Características combinadas e textos livres podem permitir identificação indireta; por isso, a equipe revisará os relatos e divulgará os resultados de forma agregada ou em trechos desidentificados.\n\nOs três autores acessarão as respostas para análise, relatório e apresentação acadêmica. A professora receberá os resultados e, se necessário à avaliação, registros desidentificados. Os dados brutos ficarão em pasta restrita e serão excluídos até 02/06/2027; as sínteses agregadas poderão integrar o relatório.\n\nApós o envio, sem um identificador, não será possível localizar sua resposta com segurança para excluí-la individualmente. A plataforma poderá tratar dados técnicos segundo suas condições; esses dados não serão solicitados pela equipe. Para esclarecimentos sobre o estudo, utilize os contatos abaixo.\n\nFabio da Silva Salvador  |  Fabio.s.salvador@edu.ufes.br\n\nFernando Azevedo Peres  |  fernando.peres@edu.ufes.br\n\nPatrik Lima Pereira  |  patrik.pereira@edu.ufes.br",
   "reference": "Da Q3 à Q5 e da Q7 à Q14, considere um único projeto de referência: o projeto profissional mais recente, em organização situada no Brasil, cuja implementação de uma integração você acompanhou nos últimos 12 meses. Se houver mais de uma integração nesse projeto, considere a mais recente cuja implementação tenha sido iniciada. Observe somente o que ocorreu nesse período, mesmo que o projeto ainda esteja em andamento. Não informe o nome do projeto.",
   "questions": {
     "Q0": {
       "title": "Q0  Após ler as informações, você concorda voluntariamente em participar deste estudo?",
-      "help": "Escolha única. Obrigatória para enviar. Se não desejar participar, encerre o preenchimento e feche o formulário sem enviar.",
+      "help": "Escolha única. Obrigatória.\n\nSe concordar, avance para os critérios de participação. No formulário eletrônico, a alternativa “Não desejo participar” levará ao encerramento, sem acesso às demais perguntas.",
       "options": [
         "Sim, li as informações e concordo em participar.",
         "Não desejo participar."
@@ -31,7 +33,7 @@ const SURVEY = {
     },
     "Q1": {
       "title": "Q1  Você atende a todos os critérios de participação apresentados abaixo?",
-      "help": "Escolha única. Obrigatória.\n\nSe não atender a algum critério, encerre o preenchimento e feche o formulário sem enviar.\n\nTer 18 anos ou mais; ter atuado profissionalmente, nos últimos 12 meses, em projeto de software de organização situada no Brasil; ter acompanhado nesse projeto uma integração cuja implementação foi iniciada nesse período.",
+      "help": "Escolha única. Obrigatória.\n\nTer 18 anos ou mais; ter atuado profissionalmente, nos últimos 12 meses, em projeto de software de organização situada no Brasil; ter acompanhado nesse projeto uma integração cuja implementação foi iniciada nesse período.\n\nSe atender a todos os critérios, avance para as perguntas da pesquisa. Caso contrário, o formulário eletrônico levará ao encerramento, sem acesso às perguntas centrais; sua resposta não integrará a análise do survey.",
       "options": [
         "Sim, atendo a todos os critérios.",
         "Não atendo a pelo menos um dos critérios."
@@ -195,20 +197,17 @@ const SURVEY = {
       "other": true
     },
     "Q13": {
-      "title": "Q13  Com que frequência você observou cada uma das situações abaixo na integração de referência?",
-      "help": "Uma resposta por situação. Opcional.\n\nConsidere apenas o período observado dos últimos 12 meses. Utilize “Não se aplica” quando a situação não puder ocorrer no estágio acompanhado e “Não sei informar” quando não tiver informação para avaliar.\n\nEscala para cada situação: 1 Nunca; 2 Raramente; 3 Às vezes; 4 Frequentemente; 5 Sempre; NA Não se aplica; NS Não sei informar.",
+      "title": "Q13  Considerando a integração de referência e apenas o período acompanhado nos últimos 12 meses, você observou cada uma das situações abaixo ao menos uma vez?",
+      "help": "Uma resposta por situação. Opcional.\n\nMarque “Sim” se observou ao menos uma ocorrência e “Não” se não observou nenhuma no período acompanhado. Use “Não se aplica” quando a situação não puder ocorrer no estágio acompanhado e “Não sei informar” quando não tiver informação suficiente para avaliar.",
       "options": [],
       "other": false
     },
     "Q13a": {
       "title": "Q13a  Restrições ou regras do sistema integrado foram identificadas somente depois do início da implementação.",
-      "help": "Resposta opcional. Considere a integração de referência nos últimos 12 meses.",
+      "help": "Escolha única. Opcional. Indique se observou a situação ao menos uma vez na integração de referência, apenas no período acompanhado dos últimos 12 meses.",
       "options": [
-        "1 — Nunca",
-        "2 — Raramente",
-        "3 — Às vezes",
-        "4 — Frequentemente",
-        "5 — Sempre",
+        "Sim",
+        "Não",
         "Não se aplica",
         "Não sei informar"
       ],
@@ -216,13 +215,10 @@ const SURVEY = {
     },
     "Q13b": {
       "title": "Q13b  Foi necessário refazer trabalho já realizado para corrigir problemas de integração.",
-      "help": "Resposta opcional. Considere a integração de referência nos últimos 12 meses.",
+      "help": "Escolha única. Opcional. Indique se observou a situação ao menos uma vez na integração de referência, apenas no período acompanhado dos últimos 12 meses.",
       "options": [
-        "1 — Nunca",
-        "2 — Raramente",
-        "3 — Às vezes",
-        "4 — Frequentemente",
-        "5 — Sempre",
+        "Sim",
+        "Não",
         "Não se aplica",
         "Não sei informar"
       ],
@@ -230,13 +226,10 @@ const SURVEY = {
     },
     "Q13c": {
       "title": "Q13c  Problemas de integração contribuíram para atrasar uma entrega em relação ao prazo previsto.",
-      "help": "Resposta opcional. Considere a integração de referência nos últimos 12 meses.",
+      "help": "Escolha única. Opcional. Indique se observou a situação ao menos uma vez na integração de referência, apenas no período acompanhado dos últimos 12 meses.",
       "options": [
-        "1 — Nunca",
-        "2 — Raramente",
-        "3 — Às vezes",
-        "4 — Frequentemente",
-        "5 — Sempre",
+        "Sim",
+        "Não",
         "Não se aplica",
         "Não sei informar"
       ],
@@ -255,9 +248,9 @@ const SURVEY = {
   ]
 };
 
-// Chaves próprias: executar a versão nova não reutiliza o formulário com várias páginas.
-const FORM_ID_KEY = 'ENGSW_SURVEY_PAGINA_UNICA_V2_FORM_ID';
-const FORM_STATE_KEY = 'ENGSW_SURVEY_PAGINA_UNICA_V2_STATE';
+// Chaves próprias: a revisão não altera formulários anteriores nem suas respostas.
+const FORM_ID_KEY = 'ENGSW_SURVEY_OCORRENCIAS_V3_FORM_ID';
+const FORM_STATE_KEY = 'ENGSW_SURVEY_OCORRENCIAS_V3_STATE';
 
 /** Execute esta função no menu superior do Apps Script. */
 function criarFormularioSurvey() {
@@ -278,9 +271,10 @@ function criarFormularioSurvey() {
       return mostrarLinks_(form);
     }
 
-    const previousId = properties.getProperty('ENGSW_SURVEY_FORM_ID');
+    const previousId = properties.getProperty('ENGSW_SURVEY_PAGINA_UNICA_V2_FORM_ID') ||
+      properties.getProperty('ENGSW_SURVEY_FORM_ID');
     if (previousId) {
-      console.log('Será criada uma versão em página única com um novo link. ' +
+      console.log('Será criada a revisão com etapas iniciais e Q13 por ocorrência, com um novo link. ' +
         'O formulário anterior e suas respostas serão preservados.');
     }
 
@@ -301,13 +295,13 @@ function criarFormularioSurvey() {
 
     form.addSectionHeaderItem().setTitle('Termo de Consentimento Livre e Esclarecido')
       .setHelpText(SURVEY.consent);
-    escolha_(form, 'Q0', true);
+    const consentimento = escolha_(form, 'Q0', true);
 
-    form.addSectionHeaderItem().setTitle('Critérios de participação');
-    escolha_(form, 'Q1', true);
+    const etapaCriterios = form.addPageBreakItem().setTitle('Critérios de participação');
+    const elegibilidade = escolha_(form, 'Q1', true);
 
-    // Títulos organizam a página sem ocultar perguntas ou criar etapas.
-    form.addSectionHeaderItem().setTitle('Caracterização do participante')
+    // As demais perguntas permanecem juntas, após as duas confirmações.
+    const etapaPerguntas = form.addPageBreakItem().setTitle('Caracterização do participante')
       .setHelpText(SURVEY.reference);
     escolha_(form, 'Q2');
     escolha_(form, 'Q3');
@@ -332,6 +326,23 @@ function criarFormularioSurvey() {
     form.addParagraphTextItem().setTitle(SURVEY.questions.Q14.title)
       .setHelpText(SURVEY.questions.Q14.help).setRequired(false);
     form.addSectionHeaderItem().setTitle('Agradecimento').setHelpText(SURVEY.thanks.join('\n\n'));
+
+    // setGoToPage neste marcador controla o fim da página ANTERIOR:
+    // participantes elegíveis enviam suas respostas sem ver o encerramento por recusa.
+    const encerramento = form.addPageBreakItem().setTitle('Encerramento sem participação')
+      .setHelpText('Agradecemos seu interesse. O preenchimento foi encerrado e nenhuma resposta sua ' +
+        'será incluída na análise do estudo. Você pode fechar esta página sem enviar.')
+      .setGoToPage(FormApp.PageNavigationType.SUBMIT);
+
+    // Uma pergunta de desvio por página: Q1 nunca pode sobrepor uma recusa em Q0.
+    consentimento.setChoices([
+      consentimento.createChoice(SURVEY.questions.Q0.options[0], etapaCriterios),
+      consentimento.createChoice(SURVEY.questions.Q0.options[1], encerramento)
+    ]);
+    elegibilidade.setChoices([
+      elegibilidade.createChoice(SURVEY.questions.Q1.options[0], etapaPerguntas),
+      elegibilidade.createChoice(SURVEY.questions.Q1.options[1], encerramento)
+    ]);
 
     // Não usar setRequireLogin: método obsoleto e indisponível em contas pessoais.
     // Em conta institucional, confira o acesso de respondedores no botão Publicar/Compartilhar.
